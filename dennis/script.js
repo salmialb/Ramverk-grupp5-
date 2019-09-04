@@ -1,6 +1,5 @@
 window.onload = function() {
     // Lyssna efter händelser
-    var queryResult = document.getElementsByClassName('team-member');
     let profiles = document.getElementsByClassName("profile");
 
     for(var i = 0; i < profiles.length; ++i){
@@ -16,11 +15,7 @@ window.onload = function() {
     }
 }
 
-    Array.from(queryResult).forEach(function(element) {
-    var id = document.getElementById(element.id);
-    console.log(id);
-    document.getElementById(element.id).addEventListener("mouseover",effectOn(id));
-});
+
 var editTitle = function(e) {
     
 };
