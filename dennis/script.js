@@ -18,13 +18,16 @@ window.onload = function() {
 function editTitle(elm) {
     let title = document.getElementById(elm.id).parentElement.lastElementChild;
     let newtitle = document.createElement("input");
+    newtitle.id = "newtitleinput";
     newtitle.type = "text";
     newtitle.placeholder = title.innerHTML;
     newtitle.addEventListener("change", function(){
         title.innerHTML = newtitle.value;
         newtitle.remove();
     });
-    elm.parentElement.appendChild(newtitle);
+
+    if(elm.parentElement.querySelector("#newtitleinput") == null)
+        elm.parentElement.appendChild(newtitle);
     //title.remove();
 }
 
