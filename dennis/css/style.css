@@ -1,0 +1,50 @@
+@charset "utf-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#wrapper {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto 0;
+
+}
+
+.team-member {
+    float: left;
+    position: relative;
+    text-align: center;
+    margin: 10px;
+}
+
+.team-name {
+    font-weight: bold;
+}
+
+.team-title {
+    font-style: italic;
+}
+
+.profile {
+    height: 150px;
+    width: 150px;
+    margin:5px;
+}
+
+.hovering {
+    box-shadow: 7px 7px 5px #ccc;
+    border: 2px black solid;
+    border-radius: 10px;
+}
+
+
