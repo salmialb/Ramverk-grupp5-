@@ -10,15 +10,23 @@ window.onload = function() {
             effectOff(this.id);
         });
         profiles[i].addEventListener("click",function(){
-            editTitle(this.id);
+            editTitle(this);
         });
     }
 }
 
-
-var editTitle = function(e) {
-    
-};
+function editTitle(elm) {
+    let title = document.getElementById(elm.id).parentElement.lastElementChild;
+    let newtitle = document.createElement("input");
+    newtitle.type = "text";
+    newtitle.placeholder = title.innerHTML;
+    newtitle.addEventListener("change", function(){
+        title.innerHTML = newtitle.value;
+        newtitle.remove();
+    });
+    elm.parentElement.appendChild(newtitle);
+    //title.remove();
+}
 
 
 
@@ -29,5 +37,3 @@ function effectOn(id){
 function effectOff(id){
     document.getElementById(id).parentElement.classList.remove("selected");
 }
-
-
