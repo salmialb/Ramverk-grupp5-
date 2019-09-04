@@ -25,7 +25,7 @@ function editTitle(elm) {
         title.innerHTML = newtitle.value;
         newtitle.remove();
     });
-    // WE HAVE A CHAT YOU KNOW
+    
     if(elm.parentElement.querySelector("#newtitleinput") == null)
         elm.parentElement.appendChild(newtitle);
     //title.remove();
