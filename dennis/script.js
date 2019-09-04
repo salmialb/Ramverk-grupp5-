@@ -22,9 +22,7 @@ var editTitle = function(e) {
 
 
 
-function effectOn(id){
-    document.getElementById(id).style.border = "2px solid black";
-    alert(id);
+function effectOn(id){  
     document.getElementById(id).parentElement.classList.add("selected");
 }
 
