@@ -3,3 +3,4 @@ Grupparbete grupp 5
 
 cedercrm test
 Dhorkiy test
+segerrub test
