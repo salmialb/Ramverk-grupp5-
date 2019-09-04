@@ -1,14 +1,27 @@
 window.onload = function() {
-    // Lyssna efter händelser
+    let profiles = document.getElementsByClassName("profile");
+
+    for(var i = 0; i < profiles.length; ++i){
+        profiles[i].addEventListener("mouseover",function(){
+            effectOn(this.id);
+        });
+        profiles[i].addEventListener("mouseleave",function(){
+            effectOff(this.id);
+        });
+        profiles[i].addEventListener("click",function(){
+            editTitle(this.id);
+        });
+    }
 }
 var editTitle = function(e) {
-    // Ändra "team-title"
+    
 };
 
 function effectOn(id){
-    // Rita en ram runt personen, kanske lite drop shadow?
+    document.getElementById(id).parentElement.classList.add("selected");
 }
 
 function effectOff(id){
-    // Stäng av effekten när musen inte längre är ovanför personen
+    document.getElementById(id).parentElement.classList.remove("selected");
 }
+
