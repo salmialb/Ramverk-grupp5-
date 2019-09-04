@@ -1,4 +1,5 @@
 window.onload = function() {
+    // Lyssna efter händelser
     let profiles = document.getElementsByClassName("profile");
 
     for(var i = 0; i < profiles.length; ++i){
@@ -27,14 +28,14 @@ function editTitle(elm) {
     //title.remove();
 }
 
+
+
 function effectOn(id){
+    document.getElementById(id).style.border = "2px solid black";
+    alert(id);
     document.getElementById(id).parentElement.classList.add("selected");
 }
 
 function effectOff(id){
     document.getElementById(id).parentElement.classList.remove("selected");
-}
-
-function changeTitle(){
-
 }
