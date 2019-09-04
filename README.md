@@ -4,7 +4,7 @@ Grupparbete grupp 5
 salmialb test1
 cedercrm test
 <<<<<<< HEAD
-rollicha test
+rollicha tested
 =======
 Dhorkiy test
 <<<<<<< HEAD
