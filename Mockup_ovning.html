@@ -9,7 +9,14 @@
     </head>
 
     <body>
-        <div class="options">
+            
+            <div id="demo">Ursprunglig text</div>
+            <script type="text/babel">
+            
+       function SelectView(props){        //Komponeneten welcome äter props och returnerar element
+                    return (
+                    
+                    <div className="options">
             <h1>Välj input här</h1>
             <select id="input">
                 <option value="arbetare">Lärare</option>
@@ -17,8 +24,17 @@
                 <option value="forskning">Forskning</option>
             </select>
         </div>
-        <br>
-        <br>
+                    
+                    
+                    );
+               
+
+                }
+                
+       function DisplayResults(props){
+        return(
+            <div>
+        <br/>
         <table>
             <tr>
                 <th id="input">Input Tex. Dennis</th>
@@ -39,5 +55,22 @@
                 <td>3,4</td>
             </tr>
         </table>
+</div>
+
+        );
+       }
+        function App(){
+           return( <div>
+               <SelectView /> 
+             <DisplayResults />
+                </div> 
+           );  
+        }
+        
+        ReactDOM.render(                              
+            <App />,
+             document.getElementById("demo") // en div som heter root (här demo) är typiskt
+             );
+    </script>
     </body>
 </html>
