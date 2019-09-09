@@ -13,7 +13,7 @@
             <div id="demo">Ursprunglig text</div>
             <script type="text/babel">
             
-       function SelectView(props){        //Komponeneten welcome äter props och returnerar element
+       function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
                     return (
                     
                     <div className="options">
@@ -31,7 +31,7 @@
 
                 }
                 
-       function DisplayResults(props){
+       function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
         return(
             <div>
         <br/>
@@ -69,7 +69,7 @@
         
         ReactDOM.render(                              
             <App />,
-             document.getElementById("demo") // en div som heter root (här demo) är typiskt
+             document.getElementById("demo") 
              );
     </script>
     </body>
