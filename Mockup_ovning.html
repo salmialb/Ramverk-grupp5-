@@ -18,12 +18,15 @@
                     
                     <div className="options">
             
-            <h1>Välj input här</h1>
+            <h1>Kursverktyg</h1>
             <select id="input">
+                <option value="" disabled selected>Välj input</option>
                 <option value="arbetare">Lärare</option>
                 <option value="kurser">Kurser</option>
                 <option value="forskning">Forskning</option>
+                <option value="BDA">BDA</option>
             </select>
+            
         </div>
                     
                     
@@ -57,6 +60,8 @@
         <table>
             <tr>
                 <th id="input">Input Tex. Dennis</th>
+                <th id="input">Placeholder</th>
+                <th id="input">Placeholder</th>
             </tr>        
             <tr>
                 <th>Kurser</th>
@@ -64,14 +69,34 @@
                 <th>Perioder</th>
             </tr>
             <tr>
-                <td>Webbutveckling</td>
+                <td>Kurs 1</td>
                 <td>100h</td>
-                <td>3,4</td>
+                <td>1</td>
             </tr>
             <tr>
-                <td>Webbutveckling</td>
+                <td>Kurs 2</td>
                 <td>100h</td>
-                <td>3,4</td>
+                <td>2,4</td>
+            </tr>
+            <tr>
+                <td>Kurs 3</td>
+                <td>100h</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Kurs 4</td>
+                <td>100h</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Kurs 5</td>
+                <td>100h</td>
+                <td>1,4</td>
+            </tr>
+            <tr>
+                <td>osv...</td>
+                <td>osv...</td>
+                <td>osv...</td>
             </tr>
         </table>
 </div>
@@ -79,12 +104,24 @@
         );
        }
 
+       function ResetTable(props){ // Var resultaten visas baserat på vad man valt i Selectview
+        return(
+            <div>
+        <br/>
+        <button type="submit" className="resetButton">Reset</button>
+</div>
+
+        );
+       }
+
+
         function App(){
            return( <div>
             
                <SelectView />
                <SearchBar /> 
              <DisplayResults />
+             <ResetTable />
                 </div> 
            );  
         }

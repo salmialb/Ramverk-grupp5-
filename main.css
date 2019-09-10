@@ -1,12 +1,16 @@
+body{
+    background-color: snow;
+}
 table {
     border: 2px solid black;
     font-family: arial, sans-serif;
     border-collapse: collapse;
+    background-color: rgb(255, 242, 226);
     width: 100%;
 }
 
 td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid rgb(170, 170, 170);
     text-align: left;
     padding: 8px;
 
@@ -15,4 +19,8 @@ td, th {
 .search{
    text-align: right;
   
+}
+
+.resetButton {
+   position: absolute; right: 1%;
 }
