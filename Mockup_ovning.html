@@ -17,6 +17,7 @@
                     return (
                     
                     <div className="options">
+            
             <h1>Välj input här</h1>
             <select id="input">
                 <option value="arbetare">Lärare</option>
@@ -30,6 +31,24 @@
                
 
                 }
+
+                function SearchBar(props){       //Sökfält
+                    return (
+                    <div className="search">
+            <input type="text" className="searchTerm" placeholder="Sök efter lärare eller kurs"/>
+      <button type="submit" className="searchButton">Sök!</button>
+        </div>
+                    
+                    
+                    );
+               
+
+                }
+
+
+                
+
+       
                 
        function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
         return(
@@ -59,9 +78,12 @@
 
         );
        }
+
         function App(){
            return( <div>
-               <SelectView /> 
+            
+               <SelectView />
+               <SearchBar /> 
              <DisplayResults />
                 </div> 
            );  
