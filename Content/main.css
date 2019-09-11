@@ -85,7 +85,8 @@ body {
 .u_box span {
     position: absolute;
     bottom: 5px;
-    left: 1.5vw;
+    text-align: center;
+    width: 100%;
 }
 
 
@@ -115,7 +116,7 @@ body {
 
 .t_col {
     width:7vw;
-    margin:1px;
+    margin:3px;
     position: relative;
     min-width: 110px;
 }
@@ -123,8 +124,7 @@ body {
     height: 3vh;
     margin:1px;
     display: flex;
-    margin-left: 7px;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 .t_cell {
     flex: 1;
@@ -132,7 +132,17 @@ body {
     border-radius: 5px;
 }
 
+#display-data-InputsContainer {
+    display: flex;
+}
+#display-data-UserContainer  {
+    display: flex;
+}
+#display-data-TopicContainer{
+    display: flex;
+    flex-direction: column;
 
+}
 #searchBar {
     text-align: center;
     margin-top: 37px;
@@ -144,7 +154,9 @@ body {
 #selectSort select {
     width: 7vw;
 }
-
+input[type=number] {
+    text-align: center;
+}
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
