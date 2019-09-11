@@ -7,12 +7,15 @@ table {
     border-collapse: collapse;
     background-color: rgb(255, 242, 226);
     width: 100%;
+   
+    
 }
 
 td, th {
     border: 1px solid rgb(170, 170, 170);
     text-align: left;
     padding: 8px;
+    
 
 }
 
@@ -23,4 +26,12 @@ td, th {
 
 .resetButton {
    position: absolute; right: 1%;
+}
+a{
+    margin: 14%;
+}
+.displayResults{
+    height: 1000px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

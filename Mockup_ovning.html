@@ -69,36 +69,37 @@
                 <th>Perioder</th>
             </tr>
             <tr>
-                <td>Kurs 1</td>
-                <td>100h</td>
-                <td>1</td>
+                <td contentEditable="true">Kurs 1</td>
+                <td contentEditable="true">100h</td>
+                <td contentEditable="true">1</td>
             </tr>
             <tr>
-                <td>Kurs 2</td>
-                <td>100h</td>
-                <td>2,4</td>
+                <td contentEditable="true">Kurs 2</td>
+                <td contentEditable="true">100h</td>
+                <td contentEditable="true">2,4</td>
             </tr>
             <tr>
-                <td>Kurs 3</td>
-                <td>100h</td>
-                <td>3</td>
+                <td contentEditable="true">Kurs 3</td>
+                <td contentEditable="true">100h</td>
+                <td contentEditable="true">3</td>
             </tr>
             <tr>
-                <td>Kurs 4</td>
-                <td>100h</td>
-                <td>4</td>
+                <td contentEditable="true">Kurs 4</td>
+                <td contentEditable="true">100h</td>
+                <td contentEditable="true">4</td>
             </tr>
             <tr>
-                <td>Kurs 5</td>
-                <td>100h</td>
-                <td>1,4</td>
+                <td contentEditable="true">Kurs 5</td>
+                <td contentEditable="true">100h</td>
+                <td contentEditable="true">1,4</td>
             </tr>
             <tr>
-                <td>osv...</td>
-                <td>osv...</td>
-                <td>osv...</td>
+                <td contentEditable="true">osv...</td>
+                <td contentEditable="true">osv...</td>
+                <td contentEditable="true">osv...</td>
             </tr>
         </table>
+        
 </div>
 
         );
@@ -108,12 +109,40 @@
         return(
             <div>
         <br/>
+        <button type="submit" className="sendData">Skicka</button>
         <button type="submit" className="resetButton">Reset</button>
+        <a href="">View1</a>
+        <a href="">View2</a>
+        <a href="">View3</a>
 </div>
 
         );
        }
-
+       /*
+       function DataIn(props){ 
+        return(
+            <div className="dataIn">
+            
+           
+            <select id="inputLarare">
+                <option value="" disabled selected>Lärare</option>
+                <option value="larare1">Lärare 1</option>
+                <option value="larare2">Lärare 2</option>
+                <option value="larare3">Lärare 3</option>
+            </select>
+            <select id="inputKurs">
+                <option value="" disabled selected>Kurs</option>
+                <option value="kurs1">Kurs 1</option>
+                <option value="kurs2">Kurs 2</option>
+                <option value="kurs3">Kurs 3</option>
+                
+            </select>
+            <input type="text" name="fname" placeholder="Mata in antalet timmar"></input>
+            <button type="submit" className="sendData">Skicka</button>
+        </div>
+ 
+        );
+       }*/
 
         function App(){
            return( <div>
@@ -122,6 +151,7 @@
                <SearchBar /> 
              <DisplayResults />
              <ResetTable />
+             
                 </div> 
            );  
         }
