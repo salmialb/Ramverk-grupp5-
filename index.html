@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>hello react</title>
+        <script src="https://unpkg.com/react@16.9.0/umd/react.development.js" ></script>
+        <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js" ></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="Content/main.css">
+    </head>
+    <body>
+        <div id="root">
+            <div class="r_header">
+                <h1>Resursplanering</h1>
+            </div>
+            <div class="r_users">
+                <div class="r_bpane_s">
+                    <div id="searchBar">
+                        <input type="text" />
+                        <button>Search</button>
+                    </div>
+                    <!--<div id="selectSort">
+                        <select>
+                            <option>Kurser</option>
+                            <option>Lärare</option>
+                        </select>
+                    </div>-->
+                </div>
+                <div class="r_bpane_l">
+                    <div class="u_box">
+                        <img src="Images/Sed-01-512.png" />
+                        <span>Username</span>
+                    </div> 
+                    <div class="u_box">
+                            <img src="Images/Sed-01-512.png" />
+                            <span>Username</span>
+                    </div>
+                    <div class="u_box">
+                            <img src="Images/Sed-01-512.png" />
+                            <span>Username</span>
+                    </div>  
+                    <div class="u_box-add">
+                        <h1>+</h1>
+                    </div> 
+                </div>
+            </div>
+            <div class="r_table">
+                <div class="r_bpane_s">
+                   <div class="t_row">Webbutveckling, 5 sp</div>
+                   <div class="t_row"></div>
+                   <div class="t_row-add">
+                        <span>+</span>
+                   </div>        
+                </div>
+                <div class="r_bpane_l">
+                    <div class="t_col">
+                        <div class="t_crow">
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" /> 
+                        </div>
+                        <div class="t_crow">
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" /> 
+                        </div>
+                    </div>
+                    <div class="t_col">
+                        <div class="t_crow">
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" /> 
+                        </div>
+                        <div class="t_crow">
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" /> 
+                        </div>
+                    </div>
+                    <div class="t_col">
+                        <div class="t_crow">
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" /> 
+                        </div>
+                        <div class="t_crow">
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" />
+                            <input class="t_cell" type="number" /> 
+                        </div>
+                    </div>       
+                </div>
+            </div>
+        </div>   
+        <script type="text/babel">
+            //ReactDOM.render(
+            //   <div><h1>Hello!</h1></div>,
+            //    document.getElementById("root")
+          //  );
+        </script>
+    </body>
+</html>
