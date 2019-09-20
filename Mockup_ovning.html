@@ -37,40 +37,29 @@
                     </div>
                 );
             }
-        function kurs(props){
-            console.log(props.namn);
-            return(
-                <Kurs namn={props.namn}/>
-
-            )
-        }
+            
+            function Kurs(props){ //För att skapa en kurs
+                return(
+                    <tr>
+                        <td contentEditable="true">{props.namn}</td>
+                        <td contentEditable="true">{props.timmar}</td>
+                        <td contentEditable="true">{props.period}</td>
+                    </tr>
+                );
+            }
         
-       function Kurs(props){ //För att skapa en kurs
-        return(
-           
-              
-                        <tr>
-                            <td contentEditable="true">{props.namn}</td>
-                            <td contentEditable="true">{props.timmar}</td>
-                            <td contentEditable="true">{props.period}</td>
-                            </tr>
-                                              
-           
-        );
-       }
-    
-function loop() {
-    var array1 = [];
-    for(var i = 1; i <= json.Program.IA.Kurser.length-1; i++){
-        array1.push(i);
-    }
-    const map1 = array1.map(x => kurs(json.Program.IA.Kurser[x]));
-    console.log(map1);
-   
-   return(map1);
-}
-ReactDOM.render(loop(),document.getElementById("test"));
-loop();
+            function loop() {
+                // Create array
+                var array1 = [];
+                for(var i = 1; i <= json.Program.IA.Kurser.length-1; i++){
+                    array1.push(i);
+                }
+
+                const map1 = array1.map(x => Kurs(json.Program.IA.Kurser[x]));
+                return(map1);
+            }
+            ReactDOM.render(loop(),document.getElementById("test"));
+            loop();
           
             function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
 
@@ -140,6 +129,6 @@ loop();
                 
                 document.getElementById("demo") 
             );
-    </script>
+        </script>
     </body>
 </html>
