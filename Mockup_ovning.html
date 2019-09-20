@@ -11,6 +11,7 @@
     <body>
             
         <div id="demo">Ursprunglig text</div>
+        <div id="test">Ursprunglig text</div>
         <script type="text/babel">
             console.log(json);
             function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
@@ -36,6 +37,40 @@
                     </div>
                 );
             }
+        function kurs(props){
+            console.log(props.namn);
+            return(
+                <Kurs namn={props.namn}/>
+
+            )
+        }
+        
+       function Kurs(props){ //För att skapa en kurs
+        return(
+           
+              
+                        <tr>
+                            <td contentEditable="true">{props.namn}</td>
+                            <td contentEditable="true">{props.timmar}</td>
+                            <td contentEditable="true">{props.period}</td>
+                            </tr>
+                                              
+           
+        );
+       }
+    
+function loop() {
+    var array1 = [];
+    for(var i = 1; i <= json.Program.IA.Kurser.length-1; i++){
+        array1.push(i);
+    }
+    const map1 = array1.map(x => kurs(json.Program.IA.Kurser[x]));
+    console.log(map1);
+   
+   return(map1);
+}
+ReactDOM.render(loop(),document.getElementById("test"));
+loop();
           
             function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
 
@@ -53,40 +88,16 @@
                             <th>Timmar</th>
                             <th>Perioder</th>
                         </tr>
-                        <tr>
-                            <td contentEditable="true">{json.Program.IA.Kurser[5].namn}</td>
-                            <td contentEditable="true">{json.Program.IA.Kurser[5].timmar}h</td>
-                            <td contentEditable="true">{json.Program.IA.Kurser[5].period}</td>
-                        </tr>
-                        <tr>
-                            <td contentEditable="true">Kurs 2</td>
-                            <td contentEditable="true">100h</td>
-                            <td contentEditable="true">2,4</td>
-                        </tr>
-                        <tr>
-                            <td contentEditable="true">Kurs 3</td>
-                            <td contentEditable="true">100h</td>
-                            <td contentEditable="true">3</td>
-                        </tr>
-                        <tr>
-                            <td contentEditable="true">Kurs 4</td>
-                            <td contentEditable="true">100h</td>
-                            <td contentEditable="true">4</td>
-                        </tr>
-                        <tr>
-                            <td contentEditable="true">Kurs 5</td>
-                            <td contentEditable="true">100h</td>
-                            <td contentEditable="true">1,4</td>
-                        </tr>
-                        <tr>
-                            <td contentEditable="true">osv...</td>
-                            <td contentEditable="true">osv...</td>
-                            <td contentEditable="true">osv...</td>
-                        </tr>
+                        
+                           <Kurs />
+                       
+                        
+               
                     </table>
                     </div>
                 );
             }
+
 
             function ResetTable(props){ // Var resultaten visas baserat på vad man valt i Selectview
                 return(
@@ -117,12 +128,16 @@
                     <SearchBar /> 
                     <DisplayResults />
                     <ResetTable />
+                   
                     </div> 
                 );  
             }
         
             ReactDOM.render(                              
-                <App />,
+               <>
+                <App />
+                <Table /></>,
+                
                 document.getElementById("demo") 
             );
     </script>
