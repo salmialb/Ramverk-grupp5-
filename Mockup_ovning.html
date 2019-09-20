@@ -7,148 +7,122 @@
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
         <link rel="stylesheet" type="text/css" href="main.css" />
     </head>
-
     <body>
             
-            <div id="demo">Ursprunglig text</div>
-            <script type="text/babel">
+        <div id="demo">Ursprunglig text</div>
+        <script type="text/babel">
             
-       function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
-                    return (
-                    
+            function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
+                return (
                     <div className="options">
-            
-            <h1>Kursverktyg</h1>
-            <select id="input">
-                <option value="" disabled selected>Välj input</option>
-                <option value="arbetare">Lärare</option>
-                <option value="kurser">Kurser</option>
-                <option value="forskning">Forskning</option>
-                <option value="BDA">BDA</option>
-            </select>
-            
-        </div>
-                    
-                    
-                    );
-               
+                    <h1>Kursverktyg</h1>
+                    <select id="input">
+                        <option value="" disabled selected>Välj input</option>
+                        <option value="arbetare">Lärare</option>
+                        <option value="kurser">Kurser</option>
+                        <option value="forskning">Forskning</option>
+                        <option value="BDA">BDA</option>
+                    </select>
+                    </div>
+                );
+            }
 
-                }
-
-                function SearchBar(props){       //Sökfält
-                    return (
+            function SearchBar(props){       //Sökfält
+                return (
                     <div className="search">
-            <input type="text" className="searchTerm" placeholder="Sök efter lärare eller kurs"/>
-      <button type="submit" className="searchButton">Sök!</button>
-        </div>
-                    
-                    
-                    );
-               
+                    <input type="text" className="searchTerm" placeholder="Sök efter lärare eller kurs"/>
+                    <button type="submit" className="searchButton">Sök!</button>
+                    </div>
+                );
+            }
+          
+            function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
+                return(
+                    <div>
+                    <br/>
+                    <table>
+                        <tr>
+                            <th id="input">Input Tex. Dennis</th>
+                            <th id="input">Placeholder</th>
+                            <th id="input">Placeholder</th>
+                        </tr>        
+                        <tr>
+                            <th>Kurser</th>
+                            <th>Timmar</th>
+                            <th>Perioder</th>
+                        </tr>
+                        <tr>
+                            <td contentEditable="true">Kurs 1</td>
+                            <td contentEditable="true">100h</td>
+                            <td contentEditable="true">1</td>
+                        </tr>
+                        <tr>
+                            <td contentEditable="true">Kurs 2</td>
+                            <td contentEditable="true">100h</td>
+                            <td contentEditable="true">2,4</td>
+                        </tr>
+                        <tr>
+                            <td contentEditable="true">Kurs 3</td>
+                            <td contentEditable="true">100h</td>
+                            <td contentEditable="true">3</td>
+                        </tr>
+                        <tr>
+                            <td contentEditable="true">Kurs 4</td>
+                            <td contentEditable="true">100h</td>
+                            <td contentEditable="true">4</td>
+                        </tr>
+                        <tr>
+                            <td contentEditable="true">Kurs 5</td>
+                            <td contentEditable="true">100h</td>
+                            <td contentEditable="true">1,4</td>
+                        </tr>
+                        <tr>
+                            <td contentEditable="true">osv...</td>
+                            <td contentEditable="true">osv...</td>
+                            <td contentEditable="true">osv...</td>
+                        </tr>
+                    </table>
+                    </div>
+                );
+            }
 
-                }
+            function ResetTable(props){ // Var resultaten visas baserat på vad man valt i Selectview
+                return(
+                    <div>
+                    <br/>
+                    <button type="submit" className="sendData">Skicka</button>
+                    <button type="submit" className="resetButton">Reset</button>
+                    <a href="">View1</a>
+                    <a href="">View2</a>
+                    <a href="">View3</a>
+                    </div>
+                );
+            }
+            
+            function DataIn(props){ 
+                return(
+                    <div className="dataIn">
+                    <input type="text" name="fname" placeholder="Mata in antalet timmar"></input>
+                    <button type="submit" className="sendData">Skicka</button>
+                    </div>    
+                );
+            }
 
-
-                
-
-       
-                
-       function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
-        return(
-            <div>
-        <br/>
-        <table>
-            <tr>
-                <th id="input">Input Tex. Dennis</th>
-                <th id="input">Placeholder</th>
-                <th id="input">Placeholder</th>
-            </tr>        
-            <tr>
-                <th>Kurser</th>
-                <th>Timmar</th>
-                <th>Perioder</th>
-            </tr>
-            <tr>
-                <td contentEditable="true">Kurs 1</td>
-                <td contentEditable="true">100h</td>
-                <td contentEditable="true">1</td>
-            </tr>
-            <tr>
-                <td contentEditable="true">Kurs 2</td>
-                <td contentEditable="true">100h</td>
-                <td contentEditable="true">2,4</td>
-            </tr>
-            <tr>
-                <td contentEditable="true">Kurs 3</td>
-                <td contentEditable="true">100h</td>
-                <td contentEditable="true">3</td>
-            </tr>
-            <tr>
-                <td contentEditable="true">Kurs 4</td>
-                <td contentEditable="true">100h</td>
-                <td contentEditable="true">4</td>
-            </tr>
-            <tr>
-                <td contentEditable="true">Kurs 5</td>
-                <td contentEditable="true">100h</td>
-                <td contentEditable="true">1,4</td>
-            </tr>
-            <tr>
-                <td contentEditable="true">osv...</td>
-                <td contentEditable="true">osv...</td>
-                <td contentEditable="true">osv...</td>
-            </tr>
-        </table>
+            function App(){
+                return( 
+                    <div>
+                    <SelectView />
+                    <SearchBar /> 
+                    <DisplayResults />
+                    <ResetTable />
+                    </div> 
+                );  
+            }
         
-</div>
-
-        );
-       }
-
-       function ResetTable(props){ // Var resultaten visas baserat på vad man valt i Selectview
-        return(
-            <div>
-        <br/>
-        <button type="submit" className="sendData">Skicka</button>
-        <button type="submit" className="resetButton">Reset</button>
-        <a href="">View1</a>
-        <a href="">View2</a>
-        <a href="">View3</a>
-</div>
-
-        );
-       }
-       
-       function DataIn(props){ 
-        return(
-            <div className="dataIn">
-            
-           
-                
-            
-            <input type="text" name="fname" placeholder="Mata in antalet timmar"></input>
-            <button type="submit" className="sendData">Skicka</button>
-        </div>
- 
-        );
-       }
-
-        function App(){
-           return( <div>
-            
-               <SelectView />
-               <SearchBar /> 
-             <DisplayResults />
-             <ResetTable />
-             
-                </div> 
-           );  
-        }
-        
-        ReactDOM.render(                              
-            <App />,
-             document.getElementById("demo") 
-             );
+            ReactDOM.render(                              
+                <App />,
+                document.getElementById("demo") 
+            );
     </script>
     </body>
 </html>
