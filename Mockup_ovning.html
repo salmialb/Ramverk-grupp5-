@@ -5,13 +5,14 @@
         <script src="https://unpkg.com/react@16.9.0/umd/react.development.js"></script>
         <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="resursering.js"></script>
         <link rel="stylesheet" type="text/css" href="main.css" />
     </head>
     <body>
             
         <div id="demo">Ursprunglig text</div>
         <script type="text/babel">
-            
+            console.log(json);
             function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
                 return (
                     <div className="options">
@@ -38,13 +39,6 @@
           
             function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
 
-                let json = { //Testing med att hämta info till tabellen
-                        "kursnamn":"Webbutveckling",
-                        "kurskod": "IA-2-001 (0)",
-                        "timmar":90,
-                        "period":1
-                    }; 
-
                 return(
                     <div>
                     <br/>
@@ -60,9 +54,9 @@
                             <th>Perioder</th>
                         </tr>
                         <tr>
-                            <td contentEditable="true">{json.kursnamn}</td>
-                            <td contentEditable="true">{json.timmar}h</td>
-                            <td contentEditable="true">{json.period}</td>
+                            <td contentEditable="true">{json.Program.IA.Kurser[5].namn}</td>
+                            <td contentEditable="true">{json.Program.IA.Kurser[5].timmar}h</td>
+                            <td contentEditable="true">{json.Program.IA.Kurser[5].period}</td>
                         </tr>
                         <tr>
                             <td contentEditable="true">Kurs 2</td>

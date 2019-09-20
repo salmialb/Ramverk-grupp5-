@@ -1,4 +1,4 @@
-{
+var json = {
   "Program": {
     "IA": {
       "Kurser": [
@@ -405,4 +405,4 @@
       "Efternamn": "Liu"
     }
   ]
-}
+};
