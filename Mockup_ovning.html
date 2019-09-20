@@ -13,10 +13,8 @@
         <div id="demo">Ursprunglig text</div>
         <script type="text/babel">
                 
-            function SelectView(props)  //Filtrering enligt arbetare, kurser eller forskning
-            {       
-                return 
-                (        
+            function SelectView(props) { //Filtrering enligt arbetare, kurser eller forskning
+                return (        
                     <div className="options">            
                     <h1>Kursverktyg</h1>
                     <select id="input">
@@ -30,10 +28,8 @@
                 );
             }
             
-            function SearchBar(props)//Sökfält
-            {       
-                return 
-                (
+            function SearchBar(props) { //Sökfält      
+                return (
                     <div className="search">
                     <input type="text" className="searchTerm" placeholder="Sök efter lärare eller kurs"/>
                     <button type="submit" className="searchButton">Sök!</button>
@@ -41,10 +37,8 @@
                 );
             }
                     
-            function DisplayResults(props) // Var resultaten visas baserat på vad man valt i Selectview
-            { 
-                    return
-                    (
+            function DisplayResults(props) { // Var resultaten visas baserat på vad man valt i Selectview
+                    return (
                         <div>
                             <table>
                                 <tr>
@@ -89,38 +83,32 @@
                                 </tr>
                             </table>
                         </div>
-
                     );
             }
 
-            function ResetTable(props) // Var resultaten visas baserat på vad man valt i Selectview
-            { 
-                    return
-                    (
+            function ResetTable(props) { // Var resultaten visas baserat på vad man valt i Selectview
+                    return (
                         <div>
                             <button type="submit" className="resetButton">Reset</button>
                         </div>
                     );
             }
 
-                function App()
-                {
-                    return
-                (
-                        <div>
-                            <SelectView />
-                            <SearchBar /> 
-                            <DisplayResults />
-                            <ResetTable />
-                        </div> 
+            function App() {
+                return (
+                    <div>
+                        <SelectView />
+                        <SearchBar /> 
+                        <DisplayResults />
+                        <ResetTable />
+                    </div> 
                 );  
-                }
-                
-                ReactDOM.render
-                (                              
-                    <App />,
-                    document.getElementById("demo") 
-                );
+            }
+            
+            ReactDOM.render(                              
+                <App />,
+                document.getElementById("demo")
+            );
         </script>
     </body>
 </html>
