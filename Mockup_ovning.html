@@ -11,32 +11,41 @@
     <body>
             
         <div id="demo">Ursprunglig text</div>
-        <div id="test">Ursprunglig text</div>
+        <div id="test">Test text</div>
         <script type="text/babel">
             console.log(json);
+
+            function loopLarare() {
+                // Create array
+                var array2 = [];
+                for(var i = 1; i <= json.Personal.length-1; i++){
+                    array2.push(i);
+                }
+
+                const map2 = array2.map(x => Larare(json.Personal[x]));
+                return(map2);
+            }
+
+            function Larare(props){
+                return(
+                    <option value="larare">{props.Förnamn} {props.Efternamn}</option>
+                )
+            }
+
             function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
                 return (
                     <div className="options">
                     <h1>Kursverktyg</h1>
                     <select id="input">
-                        <option value="" disabled selected>Välj input</option>
-                        <option value="arbetare">Lärare</option>
-                        <option value="kurser">Kurser</option>
-                        <option value="forskning">Forskning</option>
-                        <option value="BDA">BDA</option>
+                        <option value="" defaultValue>Välj input</option>
+                        {loopLarare()}
+                        <Larare />
                     </select>
                     </div>
                 );
             }
 
-            function SearchBar(props){       //Sökfält
-                return (
-                    <div className="search">
-                    <input type="text" className="searchTerm" placeholder="Sök efter lärare eller kurs"/>
-                    <button type="submit" className="searchButton">Sök!</button>
-                    </div>
-                );
-            }
+            
             
             function Kurs(props){ //För att skapa en kurs
                 return(
@@ -48,7 +57,7 @@
                 );
             }
         
-            function loop() {
+            function loopKurser() {
                 // Create array
                 var array1 = [];
                 for(var i = 1; i <= json.Program.IA.Kurser.length-1; i++){
@@ -58,75 +67,35 @@
                 const map1 = array1.map(x => Kurs(json.Program.IA.Kurser[x]));
                 return(map1);
             }
-            ReactDOM.render(loop(),document.getElementById("test"));
-            loop();
-          
-            function DisplayResults(props){ // Var resultaten visas baserat på vad man valt i Selectview
 
+            function DisplayResults(props) {
                 return(
-                    <div>
-                    <br/>
                     <table>
-                        <tr>
-                            <th id="input">Input Tex. Dennis</th>
-                            <th id="input">Placeholder</th>
-                            <th id="input">Placeholder</th>
-                        </tr>        
-                        <tr>
-                            <th>Kurser</th>
-                            <th>Timmar</th>
-                            <th>Perioder</th>
-                        </tr>
-                        
-                           <Kurs />
-                       
-                        
-               
+                        <thead>
+                            <tr>
+                                <th>{json.Personal[0].förnamn}</th>
+                                <th>{json.Personal[0].efternamn}</th>
+                                <th>Placeholder</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loopKurser()}
+                            <Kurs />
+                        </tbody>
                     </table>
-                    </div>
-                );
+                )          
             }
-
-
-            function ResetTable(props){ // Var resultaten visas baserat på vad man valt i Selectview
-                return(
-                    <div>
-                    <br/>
-                    <button type="submit" className="sendData">Skicka</button>
-                    <button type="submit" className="resetButton">Reset</button>
-                    <a href="">View1</a>
-                    <a href="">View2</a>
-                    <a href="">View3</a>
-                    </div>
-                );
-            }
-            
-            function DataIn(props){ 
-                return(
-                    <div className="dataIn">
-                    <input type="text" name="fname" placeholder="Mata in antalet timmar"></input>
-                    <button type="submit" className="sendData">Skicka</button>
-                    </div>    
-                );
-            }
-
             function App(){
                 return( 
-                    <div>
+                    <div>                   
                     <SelectView />
-                    <SearchBar /> 
                     <DisplayResults />
-                    <ResetTable />
-                   
                     </div> 
                 );  
             }
         
             ReactDOM.render(                              
-               <>
-                <App />
-                <Table /></>,
-                
+                <App />,
                 document.getElementById("demo") 
             );
         </script>
