@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello React</title>
+        <script src="https://unpkg.com/react@16.9.0/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="resursering.js"></script>
+        <link rel="stylesheet" type="text/css" href="main.css" />
+    </head>
+    <body>
+            
+        <div id="demo">Ursprunglig text</div>
+        
+        <script type="text/babel">
+            console.log(json);
+
+            function loopLarare() {
+                // Create array
+                var array2 = [];
+                for(var i = 0; i <= json.Personal.length-1; i++){
+                    array2.push(i);
+                }
+
+                const map2 = array2.map(x => Larare(json.Personal[x]));
+                return(map2);
+            }
+
+            function Larare(props){
+                return(
+                    <option value="larare">{props.Förnamn} {props.Efternamn}</option>
+                )
+            }
+
+            function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
+                return (
+                    <div className="options">
+                 
+                    <select id="input">
+                        <option value="" defaultValue>Välj input</option>
+                        {loopLarare()}
+                        <Larare />
+                    </select>
+                    </div>
+                );
+            }
+
+            
+            
+            function Kurs(props){ //För att skapa en kurs
+                return(
+                    <tr>
+                        <td contentEditable="true">{props.namn}</td>
+                        <td contentEditable="true">{props.timmar}</td>
+                        <td contentEditable="true">{props.period}</td>
+                    </tr>
+                );
+            }
+        
+            function loopKurser() {
+                // Create array
+                var array1 = [];
+                for(var i = 0; i <= json.Program.IA.Kurser.length-1; i++){
+                    array1.push(i);
+                }
+
+                const map1 = array1.map(x => Kurs(json.Program.IA.Kurser[x]));
+                return(map1);
+            }
+
+            function DisplayResults(props) {
+                return(
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{json.Personal[0].Förnamn} (exempel)</th>
+                                <th>{json.Personal[0].Efternamn} (exempel)</th>
+                                <th>Placeholder</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loopKurser()}
+                            <Kurs />
+                        </tbody>
+                    </table>
+                )          
+            }
+
+
+            class ChangeView extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {  
+                    header: "Välj lärare för att filtrera",
+                body : <DisplayResults />
+
+                }
+                
+                this.updateState = this.updateState.bind(this);
+
+            }
+
+            updateState(){
+                if (this.state.select.value == "Dennis Biström"){
+                this.setState(
+                    {header: "State2",
+                body : <DisplayResults />}
+                );
+            }
+            else{
+                this.setState(
+                    {header: "Välj lärare för att filtrera",
+                body : <DisplayResults />}
+                );
+            }
+            }
+            render(){
+                return(
+                <div>
+                    <h1>{this.state.header}</h1>
+                    <SelectView />
+                    <div>{this.state.body}</div>
+                    </div>
+                );
+            }    
+        }
+
+            function App(){
+                return( 
+                    <div>                   
+                    
+                   
+                    <ChangeView />
+                    </div> 
+                );  
+            }
+        
+            ReactDOM.render(                              
+                <App />,
+                document.getElementById("demo") 
+            );
+        </script>
+    </body>
+</html>
