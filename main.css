@@ -29,3 +29,8 @@ td, th {
 a{
     margin: 14%;
 }
+
+.options {
+    padding: 5px;
+    margin: 5px;
+}
