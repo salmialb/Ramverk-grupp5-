@@ -13,8 +13,6 @@
         <div id="demo">Ursprunglig text</div>
         <div id="test">Test text</div>
         <script type="text/babel">
-            console.log(json);
-
             function loopLarare(props) {
                 // Create array
                 var array2 = [];
@@ -32,67 +30,31 @@
                 )
             }            
 
-            function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
-                return (
-                    <>
-                        <div className="options">
-                        <h1>Kursverktyg</h1>
-                        <select id="input" onChange={(evt) => changeLarare(evt.currentTarget)}>
-                            <option value="" defaultValue>Välj input</option>
-                            {loopLarare()}
-                            <Larare />
-                        </select>
-                        </div>    
-                    </>
-                );
-            }
-
-            function changeLarare(select) {
-                console.log(select.options[select.selectedIndex].text);
-            }
-            
-            function Kurs(props){ //För att skapa en kurs
+            function Kurs(props,app){ //För att skapa en kurs
                 return(
                     <tr key={props.namn}>
-                        <td contentEditable="true">{props.namn}</td>
-                        <td contentEditable="true">{props.timmar}</td>
-                        <td contentEditable="true">{props.period}</td>
+                        <td>{props.namn}</td>
+                        <td>{props.timmar}</td>
+                        <td>{props.period}</td>
+                        <td>{props.AssignedTo != undefined ? props.AssignedTo.map(x => x.Förnamn).join(",") : ""}</td>
+                        <td onClick={elm => app.assignToCourse(elm.currentTarget)}></td>
                     </tr>
                 );
             }
-        
-            function loopKurser(props) {
+            
+            function loopKurser(app) {
                 // Create array
-                var array1 = [];
-                for(var i = 0; i <= json.Program.IA.Kurser.length-1; i++){
-                    array1.push(i);
+                if(app.state.showAll){
+                    const map1 = json.Program.IA.Kurser.map(x => Kurs(x,app));
+                    const map2 = json.Program.BDA.Kurser.map(x => Kurs(x,app));
+                    return(map1.concat(map2));
                 }
-                if(props.Förnamn !== undefined){
-                    var kurser = personalData.Personal.filter(item => item.Person.Förnamn === props.Förnamn && item.Person.Efternamn === props.Efternamn);
-                    if(kurser.length > 0){
-                        const IAKurser = kurser.map(x => x.Kurser)[0].IA.map(x => Kurs(x));
-                        return(IAKurser);
-                    }
+                else if(app.state.Person.Förnamn !== undefined){
+                    const IAKurser = json.Program.IA.Kurser.filter(x => x.AssignedTo.filter(y => y.Förnamn === app.state.Person.Förnamn && y.Efternamn === app.state.Person.Efternamn).length > 0).map(x => Kurs(x,app));
+                    const BDAKurser = json.Program.BDA.Kurser.filter(x => x.AssignedTo.filter(y => y.Förnamn === app.state.Person.Förnamn && y.Efternamn === app.state.Person.Efternamn).length > 0).map(x => Kurs(x,app));
+                    return(IAKurser.concat(BDAKurser));   
                 }
                 return(null);
-            }
-
-            function DisplayResults(props) {
-                return(
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>{json.Personal[0].Förnamn} (exempel)</th>
-                                <th>{json.Personal[0].Efternamn} (exempel)</th>
-                                <th>Placeholder</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {loopKurser()}
-                            <Kurs />
-                        </tbody>
-                    </table>
-                )          
             }
             
             class App extends React.Component{
@@ -100,48 +62,81 @@
                     super(props);
                     this.state = {
                         key: 0,
-                        Person: {}
+                        Person: {},
+                        showAll: true
                     }  
                     this.handleChange = this.handleChange.bind(this);
                     this.handleClick = this.handleClick.bind(this);
                 }
 
                 handleChange(props){
-                    let randomID = Math.floor(Math.random() * 999999);
                     let name = props.options[props.selectedIndex].text.split(" ");
-                    let newPerson = json.Personal.filter(x => x.Förnamn === name[0] && x.Efternamn === name[1])[0];
-                    this.setState({
-                        Person: newPerson
-                    });
-
+                    let newPerson = json.Personal.filter(x => x.Förnamn === name[0] && x.Efternamn === name[1])[0];  
+                    if(newPerson !== undefined){
+                        this.setState({
+                            Person: newPerson,
+                            showAll: false
+                        });
+                    }
+                    else {
+                        this.setState({
+                            showAll: true
+                        });
+                    }
                 }
-                handleClick(){
 
+                handleClick(props){     
+                    let randomID = Math.floor(Math.random() * 999999);
+                    if(props === "0"){
+                        this.setState({
+                            showAll: false
+                        });
+                    }
+                    else {
+                        this.setState({
+                            showAll: true
+                        });
+                    }
+                }
+
+                assignToCourse(props){
+                    let coursename = props.parentElement.firstChild.innerText;
+                    let iac = json.Program.IA.Kurser.filter(x => x.namn === coursename);
+                    let bdac = json.Program.BDA.Kurser.filter(x => x.namn === coursename);
+                    console.log(coursename);
+                    if(iac.length > 0){
+                        json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
+                    }
+                    else if(bdac.length > 0){
+                        json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
+                    }
                 }
 
                 render(){
                     return(
                         <div>                   
-                            <>
-                                <div className="options">
-                                    <h1>Kursverktyg</h1>
-                                    <select id="input" onChange={(evt) => this.handleChange(evt.currentTarget)}>
-                                        <option value="" defaultValue>Välj input</option>
-                                        {loopLarare()}
-                                        <Larare />
-                                    </select>
-                                </div>    
-                            </>
-                            <table>
+                            <div className="options">
+                                <h1>Kursverktyg</h1>
+                                <select id="input" onChange={(evt) => this.handleChange(evt.currentTarget)}>
+                                    <option value="" defaultValue>Välj input</option>
+                                    {loopLarare()}
+                                    <Larare />
+                                </select>
+                            </div>    
+                            <button onClick={e => this.handleClick(e.target.value)} value={0}>My Courses</button>
+                            <button onClick={e => this.handleClick(e.target.value)} value={1}>All</button>
+                            <table id="kurstabel">
                                 <thead>
                                     <tr>
                                         <th>{this.state.Person.Förnamn} (exempel)</th>
                                         <th>{this.state.Person.Efternamn} (exempel)</th>
-                                        <th>Placeholder</th>
+                                        <th>Period</th>
+                                        <th>Assigned to</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {loopKurser(this.state.Person)}
+                                    {loopKurser(this)}
                                     <Kurs />
                                 </tbody>
                             </table>
