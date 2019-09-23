@@ -11,45 +11,49 @@
     <body>
             
         <div id="demo">Ursprunglig text</div>
-        
+        <div id="test">Test text</div>
         <script type="text/babel">
             console.log(json);
 
-            function loopLarare() {
+            function loopLarare(props) {
                 // Create array
                 var array2 = [];
                 for(var i = 0; i <= json.Personal.length-1; i++){
                     array2.push(i);
                 }
 
-                const map2 = array2.map(x => Larare(json.Personal[x]));
+                const map2 = array2.map((x,i) => Larare(json.Personal[x],i));
                 return(map2);
             }
 
-            function Larare(props){
+            function Larare(props,index){
                 return(
-                    <option value="larare">{props.Förnamn} {props.Efternamn}</option>
+                    <option key={"larare"+index} value="larare">{props.Förnamn} {props.Efternamn}</option>
                 )
-            }
+            }            
 
             function SelectView(props){       //Filtrering enligt arbetare, kurser eller forskning
                 return (
-                    <div className="options">
-                 
-                    <select id="input">
-                        <option value="" defaultValue>Välj input</option>
-                        {loopLarare()}
-                        <Larare />
-                    </select>
-                    </div>
+                    <>
+                        <div className="options">
+                        <h1>Kursverktyg</h1>
+                        <select id="input" onChange={(evt) => changeLarare(evt.currentTarget)}>
+                            <option value="" defaultValue>Välj input</option>
+                            {loopLarare()}
+                            <Larare />
+                        </select>
+                        </div>    
+                    </>
                 );
             }
 
-            
+            function changeLarare(select) {
+                console.log(select.options[select.selectedIndex].text);
+            }
             
             function Kurs(props){ //För att skapa en kurs
                 return(
-                    <tr>
+                    <tr key={props.namn}>
                         <td contentEditable="true">{props.namn}</td>
                         <td contentEditable="true">{props.timmar}</td>
                         <td contentEditable="true">{props.period}</td>
@@ -57,15 +61,20 @@
                 );
             }
         
-            function loopKurser() {
+            function loopKurser(props) {
                 // Create array
                 var array1 = [];
                 for(var i = 0; i <= json.Program.IA.Kurser.length-1; i++){
                     array1.push(i);
                 }
-
-                const map1 = array1.map(x => Kurs(json.Program.IA.Kurser[x]));
-                return(map1);
+                if(props.Förnamn !== undefined){
+                    var kurser = personalData.Personal.filter(item => item.Person.Förnamn === props.Förnamn && item.Person.Efternamn === props.Efternamn);
+                    if(kurser.length > 0){
+                        const IAKurser = kurser.map(x => x.Kurser)[0].IA.map(x => Kurs(x));
+                        return(IAKurser);
+                    }
+                }
+                return(null);
             }
 
             function DisplayResults(props) {
@@ -85,56 +94,62 @@
                     </table>
                 )          
             }
+            
+            class App extends React.Component{
+                constructor(props){
+                    super(props);
+                    this.state = {
+                        key: 0,
+                        Person: {}
+                    }  
+                    this.handleChange = this.handleChange.bind(this);
+                    this.handleClick = this.handleClick.bind(this);
+                }
 
-
-            class ChangeView extends React.Component{
-            constructor(props){
-                super(props);
-                this.state = {  
-                    header: "Välj lärare för att filtrera",
-                body : <DisplayResults />
+                handleChange(props){
+                    let randomID = Math.floor(Math.random() * 999999);
+                    let name = props.options[props.selectedIndex].text.split(" ");
+                    let newPerson = json.Personal.filter(x => x.Förnamn === name[0] && x.Efternamn === name[1])[0];
+                    this.setState({
+                        Person: newPerson
+                    });
 
                 }
-                
-                this.updateState = this.updateState.bind(this);
+                handleClick(){
 
-            }
+                }
 
-            updateState(){
-                if (this.state.select.value == "Dennis Biström"){
-                this.setState(
-                    {header: "State2",
-                body : <DisplayResults />}
-                );
+                render(){
+                    return(
+                        <div>                   
+                            <>
+                                <div className="options">
+                                    <h1>Kursverktyg</h1>
+                                    <select id="input" onChange={(evt) => this.handleChange(evt.currentTarget)}>
+                                        <option value="" defaultValue>Välj input</option>
+                                        {loopLarare()}
+                                        <Larare />
+                                    </select>
+                                </div>    
+                            </>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>{this.state.Person.Förnamn} (exempel)</th>
+                                        <th>{this.state.Person.Efternamn} (exempel)</th>
+                                        <th>Placeholder</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {loopKurser(this.state.Person)}
+                                    <Kurs />
+                                </tbody>
+                            </table>
+                            
+                        </div> 
+                    );
+                }
             }
-            else{
-                this.setState(
-                    {header: "Välj lärare för att filtrera",
-                body : <DisplayResults />}
-                );
-            }
-            }
-            render(){
-                return(
-                <div>
-                    <h1>{this.state.header}</h1>
-                    <SelectView />
-                    <div>{this.state.body}</div>
-                    </div>
-                );
-            }    
-        }
-
-            function App(){
-                return( 
-                    <div>                   
-                    
-                   
-                    <ChangeView />
-                    </div> 
-                );  
-            }
-        
             ReactDOM.render(                              
                 <App />,
                 document.getElementById("demo") 
