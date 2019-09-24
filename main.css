@@ -19,8 +19,8 @@ td, th {
 
 }
 
-.search{
-   text-align: right;
+#searchInput{
+   position: absolute; top: 10%; right: 5%;
   
 }
 
