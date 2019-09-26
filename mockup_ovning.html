@@ -11,7 +11,6 @@
     <body>
             
         <div id="demo">Ursprunglig text</div>
-        <div id="test">Test text</div>
         <script type="text/babel">
             function loopLarare(props) {
                 // Create array
@@ -139,13 +138,14 @@
                                 <h1>Kursverktyg</h1>
                                 <select id="input" onChange={(evt) => this.handleChange(evt.currentTarget)}>
                                     <option value="" defaultValue>Välj input</option>
+                                    <option value="Kurser" >Kurser utan lärare</option>
                                     {loopLarare()}
                                     <Larare />
                                 </select>
                             </div>    
                             <button onClick={e => this.handleClick(e.target.value)} value={0}>My Courses</button>
                             <button onClick={e => this.handleClick(e.target.value)} value={1}>All</button>
-                            <table contenteditable="true" spellcheck="false" id="kurstabel">
+                            <table contentEditable="true" spellCheck="false" id="kurstabel" suppressContentEditableWarning={true}>
                                 <thead>
                                     <tr>
                                         <th>{this.state.Person.Förnamn} (exempel)</th>
