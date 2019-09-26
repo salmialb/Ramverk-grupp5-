@@ -30,13 +30,28 @@
             }            
 
             function Kurs(props,app){ //För att skapa en kurs
+                let randomID = Math.floor(Math.random() * 999999);
+                let assignedto = props.AssignedTo != undefined ? props.AssignedTo.map(x => x.Förnamn).join(",") : "";
+                let per = app.state.Person;
+                let AssignToKurs = function () {
+                    if(per.Förnamn !== "" && per.Efternamn !== ""){
+                        if(props.AssignedTo.filter(x => x.Förnamn == per.Förnamn && x.Efternamn == per.Efternamn).length > 0){
+                            return <td className="assignDisabled">+</td>;
+                        }
+                        else {
+                            return <td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignbutton">+</td>
+                        }
+                    }
+                    return <td className="assignDisabled">+</td>;
+                }
+
                 return(
-                    <tr key={props.namn}>
+                    <tr key={randomID}>
                         <td>{props.namn}</td>
                         <td>{props.timmar}</td>
                         <td>{props.period}</td>
-                        <td>{props.AssignedTo != undefined ? props.AssignedTo.map(x => x.Förnamn).join(",") : ""}</td>
-                        <td onClick={elm => app.assignToCourse(elm.currentTarget)}></td>
+                        <td>{assignedto}</td>
+                        <AssignToKurs />
                     </tr>
                 );
             }
@@ -74,18 +89,21 @@
                  }
                 }
             
-            class App extends React.Component{
+                class App extends React.Component{
                 constructor(props){
                     super(props);
                     this.state = {
                         key: 0,
-                        Person: {},
+                        Person: {
+                            "Förnamn" : "",
+                            "Efternamn" : ""
+                        },
                         showAll: true
                     }  
                     this.handleChange = this.handleChange.bind(this);
                     this.handleClick = this.handleClick.bind(this);
                 }
-
+                
                 handleChange(props){
                     let name = props.options[props.selectedIndex].text.split(" ");
                     let newPerson = json.Personal.filter(x => x.Förnamn === name[0] && x.Efternamn === name[1])[0];  
@@ -114,6 +132,7 @@
                             showAll: true
                         });
                     }
+                    console.log("asd");
                 }
 
                 assignToCourse(props){
@@ -127,29 +146,30 @@
                     else if(bdac.length > 0){
                         json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
                     }
+                    this.setState({
+                        showAll: true
+                    });
                 }
                 
 
-                render(){
-                    
+                render(){ 
                     return(
                         <div>                   
                             <div className="options">
                                 <h1>Kursverktyg</h1>
                                 <select id="input" onChange={(evt) => this.handleChange(evt.currentTarget)}>
                                     <option value="" defaultValue>Välj input</option>
-                                    <option value="Kurser" >Kurser utan lärare</option>
                                     {loopLarare()}
                                     <Larare />
                                 </select>
                             </div>    
                             <button onClick={e => this.handleClick(e.target.value)} value={0}>My Courses</button>
                             <button onClick={e => this.handleClick(e.target.value)} value={1}>All</button>
-                            <table contentEditable="true" spellCheck="false" id="kurstabel" suppressContentEditableWarning={true}>
+                            <table id="kurstabel">
                                 <thead>
                                     <tr>
-                                        <th>{this.state.Person.Förnamn} (exempel)</th>
-                                        <th>{this.state.Person.Efternamn} (exempel)</th>
+                                        <th>{this.state.Person.Förnamn + " " + this.state.Person.Efternamn}</th>
+                                        <th>Time (h)</th>
                                         <th>Period</th>
                                         <th>Assigned to</th>
                                         <th></th>
@@ -157,11 +177,10 @@
                                 </thead>
                                 <tbody>
                                     {loopKurser(this)}
-                                    <Kurs />
+                                   
                                 </tbody>
                             </table>
                             <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
-                            <button id="send">Skicka!</button>
                         </div> 
                     );
                 }
