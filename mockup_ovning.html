@@ -72,8 +72,8 @@
                         tr[i].style.display = "none";
                     }
                     }       
-  }
-}
+                 }
+                }
             
             class App extends React.Component{
                 constructor(props){
@@ -145,7 +145,7 @@
                             </div>    
                             <button onClick={e => this.handleClick(e.target.value)} value={0}>My Courses</button>
                             <button onClick={e => this.handleClick(e.target.value)} value={1}>All</button>
-                            <table id="kurstabel">
+                            <table contenteditable="true" spellcheck="false" id="kurstabel">
                                 <thead>
                                     <tr>
                                         <th>{this.state.Person.Förnamn} (exempel)</th>
@@ -161,6 +161,7 @@
                                 </tbody>
                             </table>
                             <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
+                            <button id="send">Skicka!</button>
                         </div> 
                     );
                 }
