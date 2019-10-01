@@ -19,6 +19,11 @@ td, th {
 
 }
 
+td:hover{
+    background-color: rgb(255, 207, 142);
+
+}
+
 #searchInput{
    position: absolute; top: 10%; right: 5%;
   
