@@ -23,6 +23,10 @@ td, th {
    position: absolute; top: 10%; right: 5%;
   
 }
+#searchInputL{
+    position: absolute; top: 10%; right: 15%;
+   
+ }
 
 .resetButton {
    position: absolute; right: 1%;
