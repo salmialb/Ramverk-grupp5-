@@ -76,7 +76,7 @@
                 }
                 function searchLarare() {
                 var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchInput");
+                input = document.getElementById("searchInputL");
                 filter = input.value.toUpperCase();
                 table = document.getElementById("kurstabel");
                 tr = table.getElementsByTagName("tr");
@@ -179,7 +179,7 @@
                                 </tbody>
                             </table>
                             <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
-                            <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök larare" ></input>
+                            <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök lärare" ></input>
                             <button id="send">Skicka!</button>
                         </div> 
                     );
