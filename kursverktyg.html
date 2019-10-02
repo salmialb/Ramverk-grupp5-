@@ -93,7 +93,7 @@
                     }
                     }
 
-                function save(id) {
+                function save() {
                     var table = document.getElementById('kurstabel');
                     var trs = table.getElementsByTagName('tr');  
                     var values = [];  
@@ -182,7 +182,7 @@
                             </div>    
                             <button onClick={e => this.handleClick(e.target.value)} value={0}>My Courses</button>
                             <button onClick={e => this.handleClick(e.target.value)} value={1}>All</button>
-                            <table contenteditable="true" spellcheck="false" id="kurstabel">
+                            <table contentEditable="true" spellCheck="false" id="kurstabel">
                                 <thead>
                                     <tr>
                                         <th>{this.state.Person.Förnamn}{" "}{this.state.Person.Efternamn} </th>
@@ -199,7 +199,7 @@
                             </table>
                             <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök lärare" ></input>
                             <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
-                            <button id="save" class="save" onClick={save}>save</button>
+                            <button id="save" id="save" onClick={save}>Save</button>
                             <button id="send">Skicka!</button>
                         </div> 
                     );
