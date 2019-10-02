@@ -1,0 +1,103 @@
+body{
+    background-color: snow;
+}
+
+table {
+    border: 2px solid black;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    /*background-color: rgb(255, 242, 226);*/
+    width: 100%;    
+}
+
+td, th {
+    border: 1px solid rgb(170, 170, 170);
+    text-align: left;
+    padding: 8px;
+}
+button{
+    width: 90px;
+    text-align: center;
+}
+select{
+    width: 180px;
+}
+#Container{
+    max-width: 960px;
+    margin: 0px auto 150px;
+    overflow: auto;
+    position: relative;
+}
+
+#kurstabel thead tr th{
+    background-color: #d4a955;
+}
+
+#kurstabel tr:nth-child(odd){
+    background-color: white;
+    color: black;
+}
+
+#kurstabel tr:nth-child(even){
+    background-color: #fff2e2;
+    color: black;
+}
+
+#kurstabel tr:hover{
+    background-color: #ffb700;
+}
+
+#searchInput{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 60px;
+}
+#searchInputL{
+    position: absolute; top: 0; margin-top: 60px; right: 200px;
+   
+ }
+
+.resetButton {
+   position: absolute; right: 1%;
+}
+
+
+
+a{
+    margin: 14%;
+}
+
+.displayResults{
+    height: 1000px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.assignDisabled {
+    background-color: lightgray;
+    text-align: center;
+    user-select: none;
+}
+.assignDisabled:hover {
+    cursor: pointer;
+    background-color:  rgb(88, 88, 88);
+}
+.assignbutton{
+    user-select: none;
+    text-align: center;
+}
+
+.assignbutton:hover {
+    cursor: pointer;
+    background-color:  rgb(161, 145, 124);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type=number]{
+    border:none;
+}
