@@ -49,14 +49,20 @@ select{
 
 #searchInput{
     position: absolute;
-    top: 0%;
-    right: 0%;
+    top: 0;
+    right: 0;
     margin-top: 60px;
 }
+#searchInputL{
+    position: absolute; top: 0; margin-top: 60px; right: 200px;
+   
+ }
 
 .resetButton {
    position: absolute; right: 1%;
 }
+
+
 
 a{
     margin: 14%;
