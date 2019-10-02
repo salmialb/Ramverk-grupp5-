@@ -1,4 +1,4 @@
-{
+var json = {
   "Program": {
     "IA": {
       "Kurser": [
@@ -497,5 +497,39 @@
       "Förnamn": "Shuhua",
       "Efternamn": "Liu"
     }
+  ]
+};
+var personalData = {
+  "Personal": [
+    {
+    "Person": {
+      "Förnamn": "Dennis",
+      "Efternamn": "Biström"
+    },
+    "Kurser" : {
+      "IA":[
+        {
+          "namn": "Forskning",
+          "kurskod": "IA‑2‑041 (0)",
+          "timmar": 100,
+          "period": 1
+        }
+      ],
+      "BDA":[
+        {
+            "namn": "Intro till BDA",
+            "kurskod": "BD-2-001 (0)",
+            "timmar": 100,
+            "period": 1
+        },
+        {
+          "namn": "Machine Learning for Predictive Problems",
+          "kurskod": "BD-2-005 (0)",
+          "timmar": 100,
+          "period": 1
+        }
+      ]
+    }
+  },
   ]
 }

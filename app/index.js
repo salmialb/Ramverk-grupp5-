@@ -4,9 +4,6 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const courses = fs.readFileSync('data.json');
-
-
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -16,10 +13,17 @@ var server = app.listen(8081,function() {
 	var port = server.address().port
 	
 	console.log("Example app listening att http://%s:%s", host, port)
+
 })
 
 app.post('/update', update)
+app.get('/data', function(req, res){
+	const courses = fs.readFileSync('./app/data.json');
+	res.send(JSON.parse(courses));
+})
 app.get('/:pageName', visitPage)
+
+
 
 
 function visitPage(req, res) {
@@ -33,12 +37,12 @@ function getPageFile(req, res) {
 	let lang = req.query.lang;
 	let file = pageName;
 	
-	return path.join(__dirname,'Ramverk-grupp5-',file);
+	return path.join(__dirname,'website',file);
 }
 
 function update(req, res){
 	var data = JSON.stringify(req.body);
-	fs.writeFile(__dirname+"/test.json", data, function(err) {
+	fs.writeFile(__dirname+"/data.json", data, function(err) {
 
     if(err) {
         return console.log(err);
