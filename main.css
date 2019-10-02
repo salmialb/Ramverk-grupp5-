@@ -15,7 +15,13 @@ td, th {
     text-align: left;
     padding: 8px;
 }
-
+button{
+    width: 90px;
+    text-align: center;
+}
+select{
+    width: 180px;
+}
 #Container{
     max-width: 960px;
     margin: 0px auto 150px;
