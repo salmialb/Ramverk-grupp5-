@@ -75,23 +75,39 @@
                  }
                 }
                 function searchLarare() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchInputL");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("kurstabel");
-                tr = table.getElementsByTagName("tr");
-                    for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[3];
-                        if (td) {
-                     txtValue = td.textContent || td.innerText;
-                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
+                    var input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("searchInputL");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("kurstabel");
+                    tr = table.getElementsByTagName("tr");
+                        for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[3];
+                            if (td) {
+                        txtValue = td.textContent || td.innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                        }       
                     }
-                    }       
-                 }
-                }
+                    }
+
+                function save(id) {
+                    var table = document.getElementById('kurstabel');
+                    var trs = table.getElementsByTagName('tr');  
+                    var values = [];  
+                    for (var i = 0; i < trs.length; i++) {
+                        var trValues = [];
+                        var tds = trs[i].getElementsByTagName('td');  
+                        for (var j = 0; j < tds.length; j++) {
+                        trValues[j] = tds[j].innerText;
+
+                        }
+                        values[i] = trValues;
+                    }
+                    console.log(values);
+                    }
             
             class App extends React.Component{
                 constructor(props){
@@ -147,6 +163,9 @@
                         json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
                     }
                 }
+
+      
+
                 
 
                 render(){
@@ -178,8 +197,9 @@
                                     <Kurs />
                                 </tbody>
                             </table>
-                            <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
                             <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök lärare" ></input>
+                            <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
+                            <button id="save" class="save" onClick={save}>save</button>
                             <button id="send">Skicka!</button>
                         </div> 
                     );
