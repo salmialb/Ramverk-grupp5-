@@ -28,14 +28,14 @@
                 )
             }            
 
-            function Kurs(props,app){ //För att skapa en kurs
+            function Kurs(props, app){ //För att skapa en kurs
                 let randomID = Math.floor(Math.random() * 999999);
                 let assignedto = props.AssignedTo != undefined ? props.AssignedTo.map(x => x.Förnamn).join(",") : "";
                 let per = app.state.Person;
                 let AssignToKurs = function () {
                     if(per.Förnamn !== "" && per.Efternamn !== ""){
                         if(props.AssignedTo.filter(x => x.Förnamn == per.Förnamn && x.Efternamn == per.Efternamn).length > 0){
-                            return <td className="assignDisabled">+</td>;
+                            return <td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignDisabled">+</td>;
                         }
                         else {
                             return <td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignbutton">+</td>
@@ -47,8 +47,8 @@
                 return(
                     <tr key={randomID}>
                         <td>{props.namn}</td>
-                        <td>{props.timmar}</td>
-                        <td>{props.period}</td>
+                        <td><input type='number' onBlur={app.changeval} defaultValue={props.timmar} data={props.namn} data-type="time" /></td>
+                        <td><input type='number' onBlur={app.changeval} defaultValue={props.period} data={props.namn} data-type="period" /></td>
                         <td>{assignedto}</td>
                         <AssignToKurs />
                     </tr>
@@ -103,6 +103,8 @@
                     }  
                     this.handleChange = this.handleChange.bind(this);
                     this.handleClick = this.handleClick.bind(this);
+                    this.changeval = this.changeval.bind(this);
+                    this.saveJsonData = this.saveJsonData.bind(this);
                 }
 
                 componentDidMount() {
@@ -142,18 +144,37 @@
                 }
 
                 assignToCourse(props){
+                    
                     let json = this.state.data;
                     let coursename = props.parentElement.firstChild.innerText;
                     let iac = json.Program.IA.Kurser.filter(x => x.namn === coursename);
                     let bdac = json.Program.BDA.Kurser.filter(x => x.namn === coursename);
+
+                    let assignArray = [];
+                    let rr = false;
+
                     if(iac.length > 0){
-                        json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
+                        assignArray = json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo;
+                        if(assignArray.filter(x => x.Förnamn == this.state.Person.Förnamn && x.Efternamn == this.state.Person.Efternamn).length > 0){
+                            json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo = assignArray.filter(x => x.Förnamn !== this.state.Person.Förnamn && x.Efternamn !== this.state.Person.Efternamn);
+                            rr = true;
+                        }
+                        else {
+                            json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
+                        }
                     }
                     else if(bdac.length > 0){
-                        json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
+                        assignArray = json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo;
+                        if(assignArray.filter(x => x.Förnamn == this.state.Person.Förnamn && x.Efternamn == this.state.Person.Efternamn).length > 0){
+                            json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo = assignArray.filter(x => x.Förnamn !== this.state.Person.Förnamn && x.Efternamn !== this.state.Person.Efternamn);
+                            rr = true;
+                        }
+                        else {
+                            json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
+                        }
                     }
                     this.setState({
-                        showAll: true
+                        showAll: this.state.showAll
                     });
                     fetch('/update', {
 					  method: 'POST',
@@ -163,12 +184,51 @@
 					  body: JSON.stringify(json)
                     });
                 }
+
                 
+                changeval(e){
+                    let json = this.state.data;
+                    let name = e.target.getAttribute("data");
+                    let type = e.target.getAttribute("data-type");
+                    let value = e.target.value;
+                    let iac = json.Program.IA.Kurser.filter(x => x.namn === name);
+                    let bdac = json.Program.BDA.Kurser.filter(x => x.namn === name);
+                    if(type === "time"){
+                        if(iac.length > 0){
+                            json.Program.IA.Kurser.filter(x => x.namn === name)[0].timmar = value;
+                        }
+                        else if(bdac.length > 0){
+                            json.Program.BDA.Kurser.filter(x => x.namn === name)[0].timmar = value;
+                        }
+                    }
+                    if(type === "period"){
+                        if(iac.length > 0){
+                            json.Program.IA.Kurser.filter(x => x.namn === name)[0].period = value;
+                        }
+                        else if(bdac.length > 0){
+                            json.Program.BDA.Kurser.filter(x => x.namn === name)[0].period = value;
+                        }
+                    }
+                    this.setState({
+                        showAll: this.state.showAll
+                    });
+                }
+                
+                saveJsonData(){
+                    fetch('/update', {
+					  method: 'POST',
+					  headers: {
+						'Content-Type': 'application/json',
+					  },
+					  body: JSON.stringify(this.state.data)
+                    });
+                }
 
                 render(){ 
 
                     let larare;
                     let kurser;
+
                     if(this.state.data != null){
                         larare = loopLarare(this.state.data);   
                         kurser = loopKurser(this);
@@ -183,8 +243,8 @@
                                     {larare}
                                 </select>
                             </div>    
-                            <button onClick={e => this.handleClick(e.target.value)} value={0}>My Courses</button>
-                            <button onClick={e => this.handleClick(e.target.value)} value={1}>All</button>
+                            <button onClick={e => this.handleClick(e.target.value)} value={0}>Mina kurser</button>
+                            <button onClick={e => this.handleClick(e.target.value)} value={1}>Alla kurser</button>
                             <table id="kurstabel">
                                 <thead>
                                     <tr>
@@ -199,7 +259,9 @@
                                     {kurser}
                                 </tbody>
                             </table>
+                            <button onClick={this.saveJsonData}>Save</button>
                             <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
+                            
                         </div> 
                     );
                 }

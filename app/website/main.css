@@ -73,7 +73,10 @@ a{
     text-align: center;
     user-select: none;
 }
-
+.assignDisabled:hover {
+    cursor: pointer;
+    background-color:  rgb(88, 88, 88);
+}
 .assignbutton{
     user-select: none;
     text-align: center;
@@ -82,4 +85,13 @@ a{
 .assignbutton:hover {
     cursor: pointer;
     background-color:  rgb(161, 145, 124);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+input[type=number]{
+    border:none;
 }
