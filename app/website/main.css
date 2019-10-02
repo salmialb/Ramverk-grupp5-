@@ -18,10 +18,13 @@ td, th {
 button{
     width: 90px;
     text-align: center;
+    margin: 10px 0 10px;
 }
+
 select{
     width: 180px;
 }
+
 #Container{
     max-width: 960px;
     margin: 0px auto 150px;
@@ -42,9 +45,20 @@ select{
     background-color: #fff2e2;
     color: black;
 }
-
+#kurstabel tr:nth-child(even) input{
+    background-color: #fff2e2;
+    color: black;
+}
+#kurstabel tr:nth-child(odd) input{
+    background-color: white;
+    color: black;
+}
 #kurstabel tr:hover{
     background-color: #ffb700;
+}
+.lowerButtons{
+    width: 30%;
+    margin: 10px 0 0 20px;
 }
 
 #searchInput{

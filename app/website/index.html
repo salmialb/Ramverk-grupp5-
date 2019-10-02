@@ -292,11 +292,11 @@
                                     {kurser}
                                 </tbody>
                             </table>
-                            <button onClick={this.saveJsonData}>Save input changes</button>
+                            <button id="inputSave" class="lowerButtons" onClick={this.saveJsonData}>Save input changes</button>
                             <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök lärare" ></input>
                             <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
-                            <button id="save" id="save" onClick={save}>Save</button>
-                            <button id="send">Skicka!</button> 
+                            <button class="lowerButtons" id="save" id="save" onClick={save}>Save</button>
+                            <button class="lowerButtons" id="send">Skicka!</button> 
                         </div> 
                     );
                 }
