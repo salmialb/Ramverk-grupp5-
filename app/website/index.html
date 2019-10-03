@@ -1,74 +1,99 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Hello React</title>
-        <script src="https://unpkg.com/react@16.9.0/umd/react.development.js"></script>
-        <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js"></script>
-        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="main.css" />
-    </head>
-    <body>
-        <div id="Container">    
+
+<head>
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16.9.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.9.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+
+<body>
+    <div id="Container">
         <div id="demo">Ursprunglig text</div>
         <script type="text/babel">
-            function loopLarare(json) {
-                // Create array
+            function loopLarare(json) { //Listar alla läraren till dropdown
                 var array2 = [];
                 for(var i = 0; i <= json.Personal.length-1; i++){
                     array2.push(i);
                 }
-
-                const map2 = array2.map((x,i) => Larare(json.Personal[x],i));
+                const map2 = array2.map((x,i) => Larare(json.Personal[x],i)); //Skapar en select option för varge lärare och sparar i en lista
                 return(map2);
             }
 
-            function Larare(props,index){
+            function Larare(props,index){ //returnerar en select option med lärarens namn
                 return(
                     <option key={"larare"+index} value="larare">{props.Förnamn} {props.Efternamn}</option>
                 )
-            }            
+            }
 
-            function Kurs(props, app){ //För att skapa en kurs
-                let randomID = Math.floor(Math.random() * 999999);
-                let assignedto = props.AssignedTo != undefined ? props.AssignedTo.map(x => x.Förnamn).join(",") : "";
+            function loopKurser(app) { //Listar ut kurser enligt filtrering
+                let json = app.state.data;
+                let returnArray = [];
+                
+                if(app.state.showAll){
+                    //Looppar igenom kurs data och separerar enligt program
+                    Object.keys(json.Program).forEach(p =>  {
+                        const map = json.Program[p].Kurser.map(k => Kurs(k,app));
+                        if(map.length > 0){
+                            returnArray.push(KursHeader(p));
+                            returnArray = returnArray.concat(map);
+                        }
+                    });
+                }
+                else if(app.state.Person.Förnamn !== undefined){
+                    //Looppar igenom kurs data och separerar enligt program
+                    Object.keys(json.Program).forEach(p =>  { 
+                        const map = json.Program[p].Kurser.filter(x => x.AssignedTo.filter(y => y.Förnamn === app.state.Person.Förnamn && y.Efternamn === app.state.Person.Efternamn).length > 0).map(k => Kurs(k,app));
+                        if(map.length > 0){
+                            returnArray.push(KursHeader(p));
+                            returnArray = returnArray.concat(map);
+                        }
+                    });
+                }
+                return (returnArray);
+            }
+
+            function Kurs(props, app){ //Skapar en table tr med kurs data
+                let randomID = Math.floor(Math.random() * 999999); 
+                let assignedto = props.AssignedTo != undefined ? props.AssignedTo.map(x => x.Förnamn).join(",") : ""; //Mappar ut kursens AssignedTo lärarens förnamn och joinar dem till en string
                 let per = app.state.Person;
-                let AssignToKurs = function () {
-                    if(per.Förnamn !== "" && per.Efternamn !== ""){
-                        if(props.AssignedTo.filter(x => x.Förnamn == per.Förnamn && x.Efternamn == per.Efternamn).length > 0){
-                            return <td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignDisabled">+</td>;
+
+                let AssignToKurs = function () { //Knappen till att assigna läraren till kurser
+                    if(per.Förnamn !== "" && per.Efternamn !== ""){ //kollar om användaren har valt en lärare
+                        if(props.AssignedTo.filter(x => x.Förnamn == per.Förnamn && x.Efternamn == per.Efternamn).length > 0){ //kollar om kursens AssignedTo array innehåller valda läraren
+                            return (<td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignDisabled">+</td>)
                         }
                         else {
-                            return <td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignbutton">+</td>
+                            return (<td onClick={elm => app.assignToCourse(elm.currentTarget)} className="assignbutton">+</td>); 
                         }
                     }
-                    return <td className="assignDisabled">+</td>;
+
+                    return <td className="assignDisabled">+</td>; 
                 }
 
                 return(
-                    <tr key={randomID}>
+                    <tr key={randomID} data-guid={props.kurskod}>
                         <td>{props.namn}</td>
-                        <td><input type='number' onBlur={app.changeval} defaultValue={props.timmar} data={props.namn} data-type="time" /></td>
+                        <td><input type='number' onBlur={app.changeval} defaultValue={props.timmar} data={props.namn} data-type="time" /></td> 
                         <td><input type='number' onBlur={app.changeval} defaultValue={props.period} data={props.namn} data-type="period" /></td>
                         <td>{assignedto}</td>
                         <AssignToKurs />
                     </tr>
-                );
+                ); 
             }
-            
-            function loopKurser(app) {
-                // Create array
-                let json = app.state.data;
-                if(app.state.showAll){
-                    const map1 = json.Program.IA.Kurser.map(x => Kurs(x,app));
-                    const map2 = json.Program.BDA.Kurser.map(x => Kurs(x,app));
-                    return(map1.concat(map2));
-                }
-                else if(app.state.Person.Förnamn !== undefined){
-                    const IAKurser = json.Program.IA.Kurser.filter(x => x.AssignedTo.filter(y => y.Förnamn === app.state.Person.Förnamn && y.Efternamn === app.state.Person.Efternamn).length > 0).map(x => Kurs(x,app));
-                    const BDAKurser = json.Program.BDA.Kurser.filter(x => x.AssignedTo.filter(y => y.Förnamn === app.state.Person.Förnamn && y.Efternamn === app.state.Person.Efternamn).length > 0).map(x => Kurs(x,app));
-                    return(IAKurser.concat(BDAKurser));   
-                }
-                return(null);
+
+            function KursHeader(headerText) {
+                return(<tr key={headerText}>
+                            <td>
+                                <p><b>{headerText}</b></p>
+                            </td>
+                            <td/>
+                            <td/>
+                            <td/>
+                            <td/>
+                    </tr>);
             }
 
             function search() {
@@ -77,78 +102,84 @@
                 filter = input.value.toUpperCase();
                 table = document.getElementById("kurstabel");
                 tr = table.getElementsByTagName("tr");
-                    for (i = 0; i < tr.length; i++) {
+                for (i = 0; i < tr.length; i++) {
                     td = tr[i].getElementsByTagName("td")[0];
-                        if (td) {
-                     txtValue = td.textContent || td.innerText;
-                             if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                    }       
-                 }
-                }
-                function searchLarare() {
-                    var input, filter, table, tr, td, i, txtValue;
-                    input = document.getElementById("searchInputL");
-                    filter = input.value.toUpperCase();
-                    table = document.getElementById("kurstabel");
-                    tr = table.getElementsByTagName("tr");
-                        for (i = 0; i < tr.length; i++) {
-                        td = tr[i].getElementsByTagName("td")[3];
-                            if (td) {
+                    if (td) {
                         txtValue = td.textContent || td.innerText;
-                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                    tr[i].style.display = "";
-                        } else {
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } 
+                        else {
                             tr[i].style.display = "none";
                         }
-                        }       
                     }
-                    }
+                }
+            }
 
-                function save() {
-                    var table = document.getElementById('kurstabel');
-                    var trs = table.getElementsByTagName('tr');  
-                    var values = [];  
-                    for (var i = 0; i < trs.length; i++) {
-                        var trValues = [];
-                        var tds = trs[i].getElementsByTagName('td');  
-                        for (var j = 0; j < tds.length; j++) {
-                        trValues[j] = tds[j].innerText;
-
+            function searchLarare() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInputL");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("kurstabel");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[3];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } 
+                        else {
+                            tr[i].style.display = "none";
                         }
-                        values[i] = trValues;
                     }
-                    console.log(values);
+                }
+            }
+
+            function save() {
+                var table = document.getElementById('kurstabel');
+                var trs = table.getElementsByTagName('tr');
+                var values = [];
+                for (var i = 0; i < trs.length; i++) {
+                    var trValues = [];
+                    var tds = trs[i].getElementsByTagName('td');
+                    for (var j = 0; j < tds.length; j++) {
+                        trValues[j] = tds[j].innerText;
                     }
-            class App extends React.Component{
+                    values[i] = trValues;
+                }
+                console.log(values);
+            }
+
+            class App extends React.Component{ //Class component till att rendera och ändra kurs tabellen
                 constructor(props){
                     super(props);
-                    this.state = {
+
+                    this.state = { //sparar i state (data från data.json, valda person från dropdown, filtrerings kondition => visa alla eller inte)
                         data: null,
                         Person: {
                             "Förnamn" : "",
                             "Efternamn" : ""
                         },
                         showAll: true
-                    }  
+                    }
+
                     this.handleChange = this.handleChange.bind(this);
                     this.handleClick = this.handleClick.bind(this);
                     this.changeval = this.changeval.bind(this);
                     this.saveJsonData = this.saveJsonData.bind(this);
+                    this.AddCourse = this.AddCourse.bind(this);
                 }
 
-                componentDidMount() {
+                componentDidMount() { //Sparar datan från data.json filen i class state (mer i ../index.js)
                     fetch('/data')
-                    .then(response => response.json())
-                    .then(data => this.setState({ data }));
+                        .then(response => response.json())
+                        .then(data => this.setState({ data })); 
                 }
 
-                handleChange(props){
-                    let name = props.options[props.selectedIndex].text.split(" ");
-                    let newPerson = this.state.data.Personal.filter(x => x.Förnamn === name[0] && x.Efternamn === name[1])[0];  
+                handleChange(props){ //onChange eventhandler till dropdownen
+                    let name = props.options[props.selectedIndex].text.split(" "); 
+                    let newPerson = this.state.data.Personal.filter(x => x.Förnamn === name[0] && x.Efternamn === name[1])[0];
                     if(newPerson !== undefined){
                         this.setState({
                             Person: newPerson,
@@ -162,8 +193,7 @@
                     }
                 }
 
-                handleClick(props){     
-                    let randomID = Math.floor(Math.random() * 999999);
+                handleClick(props){ //onClick eventhandler som ändrar filtrerings konditionen
                     if(props === "0"){
                         this.setState({
                             showAll: false
@@ -176,50 +206,37 @@
                     }
                 }
 
-                assignToCourse(props){
-                    
+                assignToCourse(props){ //onClick eventhandler till + märket i tabellen
                     let json = this.state.data;
-                    let coursename = props.parentElement.firstChild.innerText;
-                    let iac = json.Program.IA.Kurser.filter(x => x.namn === coursename);
-                    let bdac = json.Program.BDA.Kurser.filter(x => x.namn === coursename);
+                    let courseGUID = props.parentElement.getAttribute("data-guid");
 
-                    let assignArray = [];
-                    let rr = false;
-
-                    if(iac.length > 0){
-                        assignArray = json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo;
-                        if(assignArray.filter(x => x.Förnamn == this.state.Person.Förnamn && x.Efternamn == this.state.Person.Efternamn).length > 0){
-                            json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo = assignArray.filter(x => x.Förnamn !== this.state.Person.Förnamn && x.Efternamn !== this.state.Person.Efternamn);
-                            rr = true;
+                    Object.keys(json.Program).forEach(p =>  { 
+                        let kurs = json.Program[p].Kurser.filter(k => k.kurskod == courseGUID); //filtrera enligt kurskod
+                        if(kurs.length > 0){
+                            var c = kurs[0];
+                            var aArray = c.AssignedTo;
+                            if(aArray.filter(x => x.Förnamn === this.state.Person.Förnamn && x.Efternamn === this.state.Person.Efternamn).length > 0){
+                                c.AssignedTo = aArray.filter(x => x.Förnamn !== this.state.Person.Förnamn && x.Efternamn !== this.state.Person.Efternamn); //Remove läraren från kursen
+                            }
+                            else {
+                                c.AssignedTo.push(this.state.Person); //Assigna läraren till kursen
+                            }
                         }
-                        else {
-                            json.Program.IA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
-                        }
-                    }
-                    else if(bdac.length > 0){
-                        assignArray = json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo;
-                        if(assignArray.filter(x => x.Förnamn == this.state.Person.Förnamn && x.Efternamn == this.state.Person.Efternamn).length > 0){
-                            json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo = assignArray.filter(x => x.Förnamn !== this.state.Person.Förnamn && x.Efternamn !== this.state.Person.Efternamn);
-                            rr = true;
-                        }
-                        else {
-                            json.Program.BDA.Kurser.filter(x => x.namn === coursename)[0].AssignedTo.push(this.state.Person);
-                        }
-                    }
+                    });
+                    fetch('/update', { //Skickar ändrade datan till backend för att sparas
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(json)
+                    });
                     this.setState({
                         showAll: this.state.showAll
                     });
-                    fetch('/update', {
-					  method: 'POST',
-					  headers: {
-						'Content-Type': 'application/json',
-					  },
-					  body: JSON.stringify(json)
-                    });
                 }
 
-                
-                changeval(e){
+
+                changeval(e){ //onBlur eventhandler till att spara ändrade input värden
                     let json = this.state.data;
                     let name = e.target.getAttribute("data");
                     let type = e.target.getAttribute("data-type");
@@ -231,7 +248,7 @@
                             json.Program.IA.Kurser.filter(x => x.namn === name)[0].timmar = value;
                         }
                         else if(bdac.length > 0){
-                            json.Program.BDA.Kurser.filter(x => x.namn === name)[0].timmar = value;
+                        json.Program.BDA.Kurser.filter(x => x.namn === name)[0].timmar = value;
                         }
                     }
                     if(type === "period"){
@@ -240,73 +257,147 @@
                         }
                         else if(bdac.length > 0){
                             json.Program.BDA.Kurser.filter(x => x.namn === name)[0].period = value;
-                        }
+                        }   
                     }
                     this.setState({
                         showAll: this.state.showAll
                     });
                 }
-                
-                saveJsonData(){
+
+                saveJsonData(){ //Skickar ändrade datan till backend för att sparas
                     fetch('/update', {
-					  method: 'POST',
-					  headers: {
-						'Content-Type': 'application/json',
-					  },
-					  body: JSON.stringify(this.state.data)
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(this.state.data)
                     });
                 }
 
-                render(){ 
+                AddCourse(props){
+                    props.preventDefault();
+                    let prog = props.target.program.value;
+                    let name = props.target.kursnamn.value;
+                    let time = props.target.timmar.value;
+                    let period = props.target.period.value;
+                    if(prog != "" && name != "" && time != "" && period != ""){
+                        let randomID = Math.floor(Math.random() * 999999); 
+                        if(this.state.data.Program[prog] != undefined){
+                            let newC = {
+                                namn: name,
+                                kurskod: randomID,
+                                timmar: time,
+                                period: period,
+                                AssignedTo: []
+                            };                          
+                            this.state.data.Program[prog].Kurser.push(newC);
+                        }
+                        else {
+                            let newC = {
+                                Kurser:[{
+                                    namn: name,
+                                    kurskod: randomID,
+                                    timmar: time,
+                                    period: period,
+                                    AssignedTo: []
+                                }]
+                            };
+                            this.state.data.Program[prog] = newC;
+                        }
+                        this.saveJsonData();
+                        this.setState({
+                            showAll: this.state.showAll
+                        });
+                        document.getElementById("addCoursePaneBackground").style.display = "none";
+                    }
+                   
+                }
 
+                ShowAddCoursePane(props){
+                    document.getElementById("addCoursePaneBackground").style.display = "block";
+                }
+                cancelCourseAdd(props){
+                    props.preventDefault();
+                    document.getElementById("addCoursePaneBackground").style.display = "none";
+                }
+
+                render(){
                     let larare;
                     let kurser;
 
+                    //Ajax eller Reacts fetch metod är asyncronisk vilket betyder att appen hinner inte hämta data från data.json förän den renderar sidan första gången
+                    //Dehär kollar om data har ännu sparats i state, annors lämnar den tabellen tom
                     if(this.state.data != null){
-                        larare = loopLarare(this.state.data);   
+                        larare = loopLarare(this.state.data);
                         kurser = loopKurser(this);
                     }
-
+                    //I stället för att vänta synkroniskt tills appen har hämtat data så renderar vi tabellen om en till gång efter datat har kommit fram
                     return(
-                        <div>                   
-                            <div className="options">
-                                <h1>Kursverktyg</h1>
-                                <select id="input" onChange={(evt) => this.handleChange(evt.currentTarget)}>
-                                    <option value="" defaultValue>Välj input</option>
-                                    {larare}
-                                </select>
-                            </div>    
-                            <button onClick={e => this.handleClick(e.target.value)} value={0}>Mina kurser</button>
-                            <button onClick={e => this.handleClick(e.target.value)} value={1}>Alla kurser</button>
-                            <table id="kurstabel">
-                                <thead>
-                                    <tr>
-                                        <th>{this.state.Person.Förnamn + " " + this.state.Person.Efternamn}</th>
-                                        <th>Time (h)</th>
-                                        <th>Period</th>
-                                        <th>Assigned to</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {kurser}
-                                </tbody>
-                            </table>
-                            <button id="inputSave" class="lowerButtons" onClick={this.saveJsonData}>Save input changes</button>
-                            <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök lärare" ></input>
-                            <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser" ></input>
-                            <button class="lowerButtons" id="save" id="save" onClick={save}>Save</button>
-                            <button class="lowerButtons" id="send">Skicka!</button> 
-                        </div> 
+                    <div>
+                        <div className="options">
+                            <h1>Kursverktyg</h1>
+                            <select id="input" onChange={(evt) =>
+                                this.handleChange(evt.currentTarget)}>
+                                <option value="" defaultValue>Välj input</option>
+                                {larare}
+                            </select>
+                        </div>
+                        <button onClick={e => this.handleClick(e.target.value)} value={0}>Mina kurser</button>
+                        <button onClick={e => this.handleClick(e.target.value)} value={1}>Alla kurser</button>
+                        <button onClick={this.ShowAddCoursePane}>Ny Kurs</button>
+                        <table id="kurstabel">
+                            <thead>
+                                <tr>
+                                    <th>{this.state.Person.Förnamn + " " + this.state.Person.Efternamn}</th>
+                                    <th>Time (h)</th>
+                                    <th>Period</th>
+                                    <th>Assigned to</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {kurser}
+                            </tbody>
+                        </table>
+                        <button id="inputSave" className="lowerButtons" onClick={this.saveJsonData}>Save input changes</button>
+                        <input type="text" id="searchInputL" onKeyUp={searchLarare} placeholder="Sök lärare"></input>
+                        <input type="text" id="searchInput" onKeyUp={search} placeholder="Sök kurser"></input>
+                        <button className="lowerButtons" id="save" onClick={save}>Save</button>
+                        <button className="lowerButtons" id="send">Skicka!</button>
+                        <div id="addCoursePaneBackground">
+                            <div id="addCoursePane">
+                                <div id="addCourse">
+                                    <form onSubmit={this.AddCourse}>
+                                        <label className="courseDataInput">
+                                            Program: <input type="text" name="program" />
+                                        </label>
+                                        <label className="courseDataInput">
+                                            Kursnamn: <input type="text" name="kursnamn" />
+                                        </label>
+                                        <label className="courseDataInput">
+                                            Timmar(avg.): <input type="text" name="timmar" />
+                                        </label>
+                                        <label className="courseDataInput">
+                                            Period: <input type="text" name="period" />
+                                        </label>
+                                        <button onClick={this.cancelCourseAdd}>CANCEL</button>
+                                        <button type="submit">ADD</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     );
                 }
             }
-         
-            ReactDOM.render(                              
+
+            ReactDOM.render(
                 <App />,
-                document.getElementById("demo") 
+                document.getElementById("demo")
             );
         </script>
-        </div> <!--end of container div -->
-    </body>
+    </div>
+    <!--end of container div -->
+</body>
+
 </html>
