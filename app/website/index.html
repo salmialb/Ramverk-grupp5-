@@ -238,27 +238,23 @@
 
                 changeval(e){ //onBlur eventhandler till att spara ändrade input värden
                     let json = this.state.data;
-                    let name = e.target.getAttribute("data");
+                    let guid = e.target.parentElement.parentElement.getAttribute("data-guid");
+                    console.log(guid);
                     let type = e.target.getAttribute("data-type");
                     let value = e.target.value;
-                    let iac = json.Program.IA.Kurser.filter(x => x.namn === name);
-                    let bdac = json.Program.BDA.Kurser.filter(x => x.namn === name);
-                    if(type === "time"){
-                        if(iac.length > 0){
-                            json.Program.IA.Kurser.filter(x => x.namn === name)[0].timmar = value;
+             
+                    Object.keys(json.Program).forEach(p => {
+                        let c = json.Program[p].Kurser.filter(k => k.kurskod === guid);
+                        if(c.length > 0){
+                            if(type === "time"){
+                                c[0].timmar = value;
+                            }
+                            if(type === "period")
+                            {
+                                c[0].period = value;
+                            }
                         }
-                        else if(bdac.length > 0){
-                        json.Program.BDA.Kurser.filter(x => x.namn === name)[0].timmar = value;
-                        }
-                    }
-                    if(type === "period"){
-                        if(iac.length > 0){
-                            json.Program.IA.Kurser.filter(x => x.namn === name)[0].period = value;
-                        }
-                        else if(bdac.length > 0){
-                            json.Program.BDA.Kurser.filter(x => x.namn === name)[0].period = value;
-                        }   
-                    }
+                    });
                     this.setState({
                         showAll: this.state.showAll
                     });
@@ -296,7 +292,7 @@
                             let newC = {
                                 Kurser:[{
                                     namn: name,
-                                    kurskod: randomID,
+                                    kurskod: randomID+"",
                                     timmar: time,
                                     period: period,
                                     AssignedTo: []
